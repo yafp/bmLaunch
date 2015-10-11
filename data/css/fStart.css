@@ -1,0 +1,39 @@
+/*
+ * Style tweaks
+ * --------------------------------------------------
+ */
+html,
+body {
+  overflow-x: hidden; /* Prevent scroll on narrow devices */
+}
+body {
+
+}
+
+
+bookmarkDiv {
+
+}
+
+a{
+   /* color: grey; */
+   font-size: 90%;
+}
+
+a:hover{
+   text-decoration: none;
+}
+
+
+.bookmarkURL{
+   font-size: 80%;
+   color: dimgrey;
+   background-color: lightgrey;
+   padding-left: 10px;
+   padding-right: 10px;
+   border-radius: 25px;
+}
+
+h4{
+   padding: 0px;
+}

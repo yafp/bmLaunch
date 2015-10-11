@@ -1,0 +1,33 @@
+{
+  "title": "bmLaunch",
+  "name": "bmLaunch",
+  "version": "0.0.1",
+  "description": "An alternative Firefox starting page",
+  "main": "index.js",
+  "author": "yafp",
+  "engines": {
+    "firefox": ">=38.0a1",
+    "fennec": ">=38.0a1"
+  },
+  "license": "MIT",
+
+
+
+  "preferences": [
+    {
+           "type": "bool",
+           "name": "boolPreference1",
+           "value": true,
+           "title": "Show URL",
+           "description": "Shows URL behind the title"
+      },
+    {
+            "type": "bool",
+            "name": "boolPreference2",
+            "value": false,
+            "title": "Show Tags",
+            "description": "Shows tags behind the title"
+        }
+     ]
+
+}
