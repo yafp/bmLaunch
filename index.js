@@ -1,6 +1,10 @@
 /*
 Searching bookmarks:
    https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/places_bookmarks
+
+Panel:
+   https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/panel
+
 */
 
 
@@ -25,48 +29,6 @@ var button = buttons.ActionButton({
 
 
 
-// APP-PANEL
-// Panel: https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/panel
-//
-var {
-   ToggleButton
-} = require('sdk/ui/button/toggle');
-var panels = require("sdk/panel");
-var self = require("sdk/self");
-
-var button = ToggleButton({
-   id: "my-button",
-   label: "my button",
-   icon: {
-      "16": "./fa-list_16_0_007dff_none.png",
-      "32": "./fa-list_32_0_007dff_none.png",
-      "64": "./fa-list_64_0_007dff_none.png"
-   },
-   onChange: handleChange
-});
-
-var panel = panels.Panel({
-   contentURL: self.data.url("panel.html"),
-   onHide: handleHide
-});
-
-function handleChange(state) {
-   if (state.checked) {
-      panel.show({
-         position: button
-      });
-   }
-}
-
-function handleHide() {
-   button.state('window', {
-      checked: false
-   });
-}
-
-
-
-
 
 
 // Init the Addon
@@ -82,7 +44,9 @@ function init_bmLaunch() {
    console.log("### function: init_bmLaunch() started");
 
    readAllBookmarks();
-   displayNotification("Finished reading bookmarks");
+   updateHTMLIndex();
+
+   displayNotification("Initializing bmLaunch completed");
 
    console.log("### function: init_bmLaunch() finished");
 }
@@ -146,10 +110,11 @@ function readAllBookmarks() {
 
 
 
+
 // --------------------------------------------------
-// On clicking the Addon-Icon
+// Update the empty html index
 // --------------------------------------------------
-function handleClick(state) {
+function updateHTMLIndex(){
 
    console.log("### function handleClick() started");
    //console.log(currentBookmarks);
@@ -171,8 +136,6 @@ function handleClick(state) {
 
       // for all bookmarks do thefollowing:
       for (i = 0; i < currentBookmarks.length; i++) {
-         //console.log("########################");
-         //console.log("- Loop: " + i);
 
          // get name of current bookmark group
          currentGroup = currentBookmarks[i]["group"]["title"].toString();
@@ -181,8 +144,6 @@ function handleClick(state) {
          // if its a new group - we need a new div for it and a heading
          if (lastGroup != currentGroup) {
 
-            // BAUSTELLE
-            //
             // generate a color for this tab & group
             var new_light_color = 'rgb(' + (Math.floor((256-229)*Math.random()) + 230) + ',' +
                                     (Math.floor((256-229)*Math.random()) + 230) + ',' +
@@ -237,3 +198,14 @@ function handleClick(state) {
       //console.log("---------END OF LOOP-------------" + i);
    }
 }
+// --------------------------------------------------
+
+
+
+// --------------------------------------------------
+// On clicking the Addon-Icon
+// --------------------------------------------------
+function handleClick(state) {
+   updateHTMLIndex();
+}
+// --------------------------------------------------
