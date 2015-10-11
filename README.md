@@ -10,3 +10,5 @@ A Firefox Addon which acts as launchbad for bookmarks
 3. Navigate to the project folder
 4. Run addon in a new empty temporary  firefox profile
 - Execute: jpm run -b $(which firefox)
+5. Generate an .xpi
+- Execute: jpm xpi
