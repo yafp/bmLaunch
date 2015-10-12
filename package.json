@@ -1,33 +1,34 @@
 {
-  "title": "bmLaunch",
-  "name": "bmLaunch",
-  "version": "0.0.1",
-  "description": "An alternative Firefox starting page",
-  "main": "index.js",
-  "author": "yafp",
-  "engines": {
-    "firefox": ">=38.0a1",
-    "fennec": ">=38.0a1"
-  },
-  "license": "MIT",
+   "title": "bmLaunch",
+   "name": "bmlaunch",
+   "version": "0.0.3",
+   "description": "Your bookmarks acting as launchpad",
+   "main": "index.js",
+   "author": "yafp",
+   "engines": {
+      "firefox": ">=38.0a1",
+      "fennec": ">=38.0a1"
+   },
+   "license": "MIT",
 
 
-
-  "preferences": [
-    {
-           "type": "bool",
-           "name": "boolPreference1",
-           "value": true,
-           "title": "Show URL",
-           "description": "Shows URL behind the title"
-      },
-    {
-            "type": "bool",
-            "name": "boolPreference2",
-            "value": false,
-            "title": "Show Tags",
-            "description": "Shows tags behind the title"
-        }
-     ]
-
+   "preferences": [{
+      "type": "bool",
+      "name": "pref_showURL",
+      "value": true,
+      "title": "Show URL",
+      "description": "Shows URL behind the title"
+   }, {
+      "description": "Chars used for displaying url",
+      "name": "pref_URLLength",
+      "type": "integer",
+      "value": 8,
+      "title": "URL display length"
+   }, {
+      "type": "bool",
+      "name": "pref_showTags",
+      "value": false,
+      "title": "Show Tags",
+      "description": "Shows tags behind the title"
+   }]
 }
