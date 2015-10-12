@@ -1,10 +1,17 @@
 /*
-Searching bookmarks:
+Some documentation links:
+
+- Searching bookmarks:
    https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/places_bookmarks
 
-Panel:
+- Panel:
    https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/panel
 
+- Package.json:
+   https://developer.mozilla.org/en-US/Add-ons/SDK/Tools/package_json
+
+- Preferences:
+   https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/simple-prefs
 */
 
 
@@ -28,9 +35,6 @@ var button = buttons.ActionButton({
 
 
 
-
-
-
 // Init the Addon
 init_bmLaunch();
 
@@ -43,13 +47,19 @@ init_bmLaunch();
 function init_bmLaunch() {
    console.log("### function: init_bmLaunch() started");
 
+   // check preference setting
+   //console.log(require("sdk/simple-prefs").prefs.pref_showURL);
+   //console.log(require("sdk/simple-prefs").prefs.pref_showTags);
+
+   // run the init-relevant methods
    readAllBookmarks();
    updateHTMLIndex();
-
-   displayNotification("Initializing bmLaunch completed");
+   //displayNotification("Initializing bmLaunch completed");
 
    console.log("### function: init_bmLaunch() finished");
 }
+
+
 
 
 
@@ -65,7 +75,6 @@ function displayNotification(notificationText) {
       data: "did gyre and gimble in the wabe",
       onClick: function(data) {
          console.log(data);
-         // console.log(this.data) would produce the same result.
       }
    });
 }
@@ -84,14 +93,14 @@ function readAllBookmarks() {
       search, UNSORTED
    } = require("sdk/places/bookmarks");
 
-   // Simple query with one object
+   // Simple query with one object - we want all bookmarks
    search({
       query: ""
    }, {
-      sort: "group"
+
+      // https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/places_bookmarks#search%28queries_options%29
+      sort: "title"
    }).on("end", function(results) {
-      // results matching any bookmark that has "firefox"
-      // in its URL, title or tag, sorted by title
 
       for (var i = 0; i < results.length; ++i) {
          console.log("");
@@ -114,14 +123,11 @@ function readAllBookmarks() {
 // --------------------------------------------------
 // Update the empty html index
 // --------------------------------------------------
-function updateHTMLIndex(){
+function updateHTMLIndex() {
 
    console.log("### function handleClick() started");
-   //console.log(currentBookmarks);
 
-   // Open an URL
-   //tabs.open("https://www.mozilla.org/");
-   //tabs.open("index.html"); // open the addon-ui
+   // Open an URL (here: addon-ui -> /data/index,html)
    tabs.open({
       url: "index.html",
       onReady: runScript
@@ -131,71 +137,112 @@ function updateHTMLIndex(){
    function runScript(tab) {
 
       // init variable
-      lastGroup = "";
-      currentGroup = "";
+      var createdGroupDivs = new Array(); // control Array which contains the names of all created group divs
 
       // for all bookmarks do thefollowing:
       for (i = 0; i < currentBookmarks.length; i++) {
 
-         // get name of current bookmark group
-         currentGroup = currentBookmarks[i]["group"]["title"].toString();
-         currentGroupID = "gID"+currentBookmarks[i]["group"]["id"].toString();
+         // fill variables
+         //
+         currentGroupName = currentBookmarks[i]["group"]["title"].toString();
+         currentGroupNameID = "gID" + currentBookmarks[i]["group"]["id"].toString();
+         currentBookmarkURL = currentBookmarks[i]["url"].toString();
+         currentBookmarkTitle = currentBookmarks[i]["title"].toString();
+         currentBookmarkTags = currentBookmarks[i]["tags"].toString();
 
-         // if its a new group - we need a new div for it and a heading
-         if (lastGroup != currentGroup) {
+         // Limit title to X chars
+         if (currentBookmarkTitle.length >= 17) {
+            currentBookmarkTitle = currentBookmarkTitle.substring(0, 17) + " ..";
+         }
+
+         // Limit title to X chars - For Display
+         if (currentBookmarkURL.length >= 25) {
+            currentBookmarkURLForDisplay = currentBookmarkURL.substring(0, 25) + " ..";
+         }
+         else {
+            currentBookmarkURLForDisplay = currentBookmarkURL;
+         }
+
+
+         // Check if we created already a div for this group or not
+         //
+         if (isInArray(createdGroupDivs, currentGroupNameID)) {
+            // we created already a div for this bookmark group
+            // nothing to do
+         } else {
+            // div for this group doesnt exist yet
+            // create the div & and add its name to the control script
+
+            // add to control-Array
+            createdGroupDivs.push(currentGroupNameID);
 
             // generate a color for this tab & group
-            var new_light_color = 'rgb(' + (Math.floor((256-229)*Math.random()) + 230) + ',' +
-                                    (Math.floor((256-229)*Math.random()) + 230) + ',' +
-                                    (Math.floor((256-229)*Math.random()) + 230) + ')';
+            var new_light_color = 'rgb(' + (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
+               (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
+               (Math.floor((256 - 229) * Math.random()) + 230) + ')';
 
-            // open a div
+            // open a div - with a random background color
             tab.attach({
-               //contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-4\" id=" + currentGroupID + ">'; "
-               // with random background colors
-               contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-4\" id=" + currentGroupID + " style=background-color:"+new_light_color+">'; "
+               contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-4\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
             });
-
 
             // write Name of Bookmark Group to new div
-            //console.log("- writing headline for group-div: " + currentGroup);
             tab.attach({
-                  contentScript: currentGroupID +".innerHTML  += '<h4>" + currentGroup + "</h4>' ;"
+               contentScript: currentGroupNameID + ".innerHTML  += '<h4>" + currentGroupName + "</h4>' ;"
+            });
+
+            // write Name of Bookmark Group to new div
+            tab.attach({
+               contentScript: currentGroupNameID + ".innerHTML  += '</div>';"
             });
          }
 
-         // add the actual link to the html page
-         //console.log("- adding link:" + currentBookmarks[i]["url"].toString());
+
+
+         // Read Preferences
+         //
+         // check if url should be displayed
+         //prefsEnableURL = (require("sdk/simple-prefs").prefs.pref_showURL);
+         //
+         // check if tags should be displayed
+         //prefsEnableTags = (require("sdk/simple-prefs").prefs.pref_showTags);
+
+         // add the current link to the corresponding div
+         //
+         /*
+         if ((prefsEnableURL == true) && (prefsEnableTags == true)) {
+            tab.attach({
+               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span>&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
+            });
+         }
+
+         if ((prefsEnableURL == true) && (prefsEnableTags == false)) {
+            tab.attach({
+               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
+            });
+         }
+
+         if ((prefsEnableURL == false) && (prefsEnableTags == true)) {
+            tab.attach({
+               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
+            });
+         }
+
+         if ((prefsEnableURL == false) && (prefsEnableTags == false)) {
+            tab.attach({
+               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "</a><br>';"
+            });
+         }
+         */
+
+         // add the actual link to the related group-div
          tab.attach({
-            contentScript: currentGroupID +".innerHTML += '<a href=" + currentBookmarks[i]["url"].toString() + ">" + currentBookmarks[i]["title"].toString() + "&nbsp;<span class=bookmarkURL>" + currentBookmarks[i]["url"].toString() + "</span></a><br>';"
+         //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarks[i]["url"].toString() + ">" + currentBookmarks[i]["title"].toString() + "&nbsp;<span class=bookmarkURL>" + currentBookmarks[i]["url"].toString() + "</span></a><br>';"
+         contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
          });
 
-         // check if div must be closed or not
-         //
-         // a) is it the last loop run?
-         if (i + 1 < currentBookmarks.length) // not the last run
-         {
-            //check if there comes another link in this group or not
-            lastGroup = currentBookmarks[i]["group"]["title"].toString();
-            nextGroup = currentBookmarks[i + 1]["group"]["title"].toString();
-            if (nextGroup != lastGroup) {
-               //console.log("- closing div of group: " + currentGroup);
-               tab.attach({
-                  contentScript: "bookmarkDiv.innerHTML += '</div> '; "
-               });
-            }
-         } else // it is the last loop
-         {
-            //console.log("- Last group finished - closing div of group: " + currentGroup);
-            tab.attach({
-               contentScript: "bookmarkDiv.innerHTML += '</div> '; "
-            });
-         }
-
-
-
+         // done - go to the next array-item
       } // end of loop
-      //console.log("---------END OF LOOP-------------" + i);
    }
 }
 // --------------------------------------------------
@@ -207,5 +254,15 @@ function updateHTMLIndex(){
 // --------------------------------------------------
 function handleClick(state) {
    updateHTMLIndex();
+}
+// --------------------------------------------------
+
+
+
+// --------------------------------------------------
+// Check if an array already contains a specified string
+// --------------------------------------------------
+function isInArray(array, search) {
+   return array.indexOf(search) >= 0;
 }
 // --------------------------------------------------
