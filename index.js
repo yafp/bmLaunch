@@ -210,8 +210,14 @@ function updateHTMLIndex() {
                (Math.floor((256 - 229) * Math.random()) + 230) + ')';
 
             // open a div - with a random background color
+            bordertyp = "border-color:red;";
+
             tab.attach({
+               //3 cols
                contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-4\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
+               // vs.
+               // 4 cols:
+               //contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-3\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
             });
 
             // write Name of Bookmark Group to new div
@@ -230,43 +236,29 @@ function updateHTMLIndex() {
          // Read Preferences
          //
          // check if url should be displayed
-         //prefsEnableURL = (require("sdk/simple-prefs").prefs.pref_showURL);
-         //
-         // check if tags should be displayed
-         //prefsEnableTags = (require("sdk/simple-prefs").prefs.pref_showTags);
+         prefsEnableURL = (require("sdk/simple-prefs").prefs.pref_showURL);
 
          // add the current link to the corresponding div
          //
-         /*
-         if ((prefsEnableURL == true) && (prefsEnableTags == true)) {
+         if (prefsEnableURL == true)  {
             tab.attach({
-               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span>&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
-            });
-         }
-
-         if ((prefsEnableURL == true) && (prefsEnableTags == false)) {
-            tab.attach({
+               //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span>&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
                contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
+
             });
          }
-
-         if ((prefsEnableURL == false) && (prefsEnableTags == true)) {
-            tab.attach({
-               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
-            });
-         }
-
-         if ((prefsEnableURL == false) && (prefsEnableTags == false)) {
+         else {
             tab.attach({
                contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "</a><br>';"
             });
          }
-         */
+
+
 
          // add the actual link to the related group-div
          tab.attach({
             //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarks[i]["url"].toString() + ">" + currentBookmarks[i]["title"].toString() + "&nbsp;<span class=bookmarkURL>" + currentBookmarks[i]["url"].toString() + "</span></a><br>';"
-            contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
+            //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
          });
 
          // done - go to the next array-item

@@ -43,3 +43,15 @@ h4{
 
 
 .highlight { background-color: yellow }
+
+
+
+.col-lg-4
+{
+   border-width: 1px;
+   border-style: solid;
+   border-color: grey;
+   margin-bottom: 2px;
+   padding-bottom:5px;
+
+}
