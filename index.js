@@ -150,101 +150,116 @@ function updateHTMLIndex() {
 
          // should this bookmark be ignored - because the group should be ignored?
          //
-         /*
-         prefsIgnoredGroups = (require("sdk/simple-prefs").prefs.pref_groupsToIgnore);
-         if()
-         {}
-         */
+         prefsEnableGroupBlacklisting = (require("sdk/simple-prefs").prefs.pref_enableGroupsFilter);
+         if (prefsEnableGroupBlacklisting == true) {
+            // read blacklisted group
+            prefsIgnoredGroups = (require("sdk/simple-prefs").prefs.pref_groupsToIgnore);
+            //console.log("Blacklisted group: "+prefsIgnoredGroups);
 
-
-         // shorten URL-title
-         //
-         prefsEnableShortURLTitle = (require("sdk/simple-prefs").prefs.pref_enableShortURLTitles);
-         if (prefsEnableShortURLTitle == true) // if shorten url-title is enabled
-         {
-            // get url title shorten length
-            prefsLengthURLTitle = (require("sdk/simple-prefs").prefs.pref_shortenURLTitleLength);
-
-            if (currentBookmarkTitle.length >= prefsLengthURLTitle) {
-               currentBookmarkTitle = currentBookmarkTitle.substring(0, prefsLengthURLTitle) + " ..";
+            if (currentGroupName == prefsIgnoredGroups) // ignore this bookmark
+            {
+               addCurrentBookmark = false;
+            } else {
+               addCurrentBookmark = true;
             }
-         }
-
-
-         // shorten URL
-         //
-         currentBookmarkURLForDisplay = currentBookmarkURL; // fill variable which is used for display
-         // simplify url
-         currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("http://", ""); // remove http://
-         currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("https://", ""); // remove https://
-         // get related preferences
-         prefsEnableShortURLs = (require("sdk/simple-prefs").prefs.pref_enableShortURLs);
-         prefsLengthURLs = (require("sdk/simple-prefs").prefs.pref_shortenURLLength);     // get url title shorten length
-         // shorten - if needed
-         if ((prefsEnableShortURLs == true) && (currentBookmarkURLForDisplay.length >= prefsLengthURLs))  // if shorten url-title is enabled
-         {
-            currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.substring(0, prefsLengthURLs) + " ..";
-         }
-
-
-         // Check if we created already a div for this group or not
-         //
-         if (isInArray(createdGroupDivs, currentGroupNameID)) {
-            // we created already a div for this bookmark group
-            // nothing to do
          } else {
-            // div for this group doesnt exist yet
-            // create the div & and add its name to the control script
-
-            // add to control-Array
-            createdGroupDivs.push(currentGroupNameID);
-
-            // generate a color for this tab & group
-            var new_light_color = 'rgb(' + (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
-               (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
-               (Math.floor((256 - 229) * Math.random()) + 230) + ')';
-
-            // open a div - with a random background color
-            bordertyp = "border-color:red;";
-
-            tab.attach({
-               //3 cols
-               contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-4\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
-               // vs.
-               // 4 cols:
-               //contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-3\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
-            });
-
-            // write Name of Bookmark Group to new div
-            tab.attach({
-               contentScript: currentGroupNameID + ".innerHTML  += '<h4>" + currentGroupName + "</h4>' ;"
-            });
-
-            // write Name of Bookmark Group to new div
-            tab.attach({
-               contentScript: currentGroupNameID + ".innerHTML  += '</div>';"
-            });
+            addCurrentBookmark = true;
          }
 
 
 
-         // Add the actual bookmark-link to the related div
-         //
-         // check if url should be displayed
-         prefsEnableURL = (require("sdk/simple-prefs").prefs.pref_showURL);
 
-         if (prefsEnableURL == true)  // Add url title and url itself
-         {
-            tab.attach({
-               //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span>&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
-               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
-            });
-         }
-         else  // just add the title
-         {
-            tab.attach({
-               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "</a><br>';"
-            });
+
+
+         if (addCurrentBookmark == true) {
+            // shorten URL-title
+            //
+            prefsEnableShortURLTitle = (require("sdk/simple-prefs").prefs.pref_enableShortURLTitles);
+            if (prefsEnableShortURLTitle == true) // if shorten url-title is enabled
+            {
+               // get url title shorten length
+               prefsLengthURLTitle = (require("sdk/simple-prefs").prefs.pref_shortenURLTitleLength);
+
+               if (currentBookmarkTitle.length >= prefsLengthURLTitle) {
+                  currentBookmarkTitle = currentBookmarkTitle.substring(0, prefsLengthURLTitle) + " ..";
+               }
+            }
+
+
+            // shorten URL
+            //
+            currentBookmarkURLForDisplay = currentBookmarkURL; // fill variable which is used for display
+            // simplify url
+            currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("http://", ""); // remove http://
+            currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("https://", ""); // remove https://
+            // get related preferences
+            prefsEnableShortURLs = (require("sdk/simple-prefs").prefs.pref_enableShortURLs);
+            prefsLengthURLs = (require("sdk/simple-prefs").prefs.pref_shortenURLLength); // get url title shorten length
+            // shorten - if needed
+            if ((prefsEnableShortURLs == true) && (currentBookmarkURLForDisplay.length >= prefsLengthURLs)) // if shorten url-title is enabled
+            {
+               currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.substring(0, prefsLengthURLs) + " ..";
+            }
+
+
+            // Check if we created already a div for this group or not
+            //
+            if (isInArray(createdGroupDivs, currentGroupNameID)) {
+               // we created already a div for this bookmark group
+               // nothing to do
+            } else {
+               // div for this group doesnt exist yet
+               // create the div & and add its name to the control script
+
+               // add to control-Array
+               createdGroupDivs.push(currentGroupNameID);
+
+               // generate a color for this tab & group
+               var new_light_color = 'rgb(' + (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
+                  (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
+                  (Math.floor((256 - 229) * Math.random()) + 230) + ')';
+
+               // open a div - with a random background color
+               bordertyp = "border-color:red;";
+
+               tab.attach({
+                  //3 cols
+                  contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-4\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
+                     // vs.
+                     // 4 cols:
+                     //contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-3\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
+               });
+
+               // write Name of Bookmark Group to new div
+               tab.attach({
+                  contentScript: currentGroupNameID + ".innerHTML  += '<h4>" + currentGroupName + "</h4>' ;"
+               });
+
+               // write Name of Bookmark Group to new div
+               tab.attach({
+                  contentScript: currentGroupNameID + ".innerHTML  += '</div>';"
+               });
+            }
+
+
+
+            // Add the actual bookmark-link to the related div
+            //
+            // check if url should be displayed
+            prefsEnableURL = (require("sdk/simple-prefs").prefs.pref_showURL);
+
+            if (prefsEnableURL == true) // Add url title and url itself
+            {
+               tab.attach({
+                  //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span>&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
+                  contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
+               });
+            } else // just add the title
+            {
+               tab.attach({
+                  contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "</a><br>';"
+               });
+            }
          }
 
          // done - go to the next array-item

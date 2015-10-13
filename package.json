@@ -1,7 +1,7 @@
 {
    "title": "bmLaunch",
    "name": "bmlaunch",
-   "version": "0.0.4",
+   "version": "0.0.5",
    "description": "Your bookmarks acting as launchpad",
    "main": "index.js",
    "author": "yafp",
@@ -40,12 +40,19 @@
          "title": "Define a max URL title length"
       },
 
+
       {
+         "type": "bool",
+         "name": "pref_enableGroupsFilter",
+         "value": true,
+         "title": "Enables group blacklisting",
+         "description": "Enables filtering of defined groups"
+      }, {
          "name": "pref_groupsToIgnore",
          "title": "Groups to ignore",
          "description": "The following groups will not be displayed (sep by semikolon)",
          "type": "string",
-         "value": ""
+         "value": "Fast Dial"
       },
 
       {
