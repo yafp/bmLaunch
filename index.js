@@ -138,8 +138,6 @@ function updateHTMLIndex() {
       // for all bookmarks do thefollowing:
       for (i = 0; i < currentBookmarks.length; i++) {
 
-
-
          // fill variables
          //
          currentGroupName = currentBookmarks[i]["group"]["title"].toString();
@@ -157,8 +155,6 @@ function updateHTMLIndex() {
          if()
          {}
          */
-
-
 
 
          // shorten URL-title
@@ -189,7 +185,6 @@ function updateHTMLIndex() {
          {
             currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.substring(0, prefsLengthURLs) + " ..";
          }
-
 
 
          // Check if we created already a div for this group or not
@@ -233,33 +228,24 @@ function updateHTMLIndex() {
 
 
 
-         // Read Preferences
+         // Add the actual bookmark-link to the related div
          //
          // check if url should be displayed
          prefsEnableURL = (require("sdk/simple-prefs").prefs.pref_showURL);
 
-         // add the current link to the corresponding div
-         //
-         if (prefsEnableURL == true)  {
+         if (prefsEnableURL == true)  // Add url title and url itself
+         {
             tab.attach({
                //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span>&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
                contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
-
             });
          }
-         else {
+         else  // just add the title
+         {
             tab.attach({
                contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "</a><br>';"
             });
          }
-
-
-
-         // add the actual link to the related group-div
-         tab.attach({
-            //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarks[i]["url"].toString() + ">" + currentBookmarks[i]["title"].toString() + "&nbsp;<span class=bookmarkURL>" + currentBookmarks[i]["url"].toString() + "</span></a><br>';"
-            //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
-         });
 
          // done - go to the next array-item
       } // end of loop
