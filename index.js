@@ -47,10 +47,6 @@ init_bmLaunch();
 function init_bmLaunch() {
    console.log("### function: init_bmLaunch() started");
 
-   // check preference setting
-   //console.log(require("sdk/simple-prefs").prefs.pref_showURL);
-   //console.log(require("sdk/simple-prefs").prefs.pref_showTags);
-
    // run the init-relevant methods
    readAllBookmarks();
    updateHTMLIndex();
@@ -142,6 +138,8 @@ function updateHTMLIndex() {
       // for all bookmarks do thefollowing:
       for (i = 0; i < currentBookmarks.length; i++) {
 
+
+
          // fill variables
          //
          currentGroupName = currentBookmarks[i]["group"]["title"].toString();
@@ -150,18 +148,48 @@ function updateHTMLIndex() {
          currentBookmarkTitle = currentBookmarks[i]["title"].toString();
          currentBookmarkTags = currentBookmarks[i]["tags"].toString();
 
-         // Limit title to X chars
-         if (currentBookmarkTitle.length >= 17) {
-            currentBookmarkTitle = currentBookmarkTitle.substring(0, 17) + " ..";
+
+
+         // should this bookmark be ignored - because the group should be ignored?
+         //
+         /*
+         prefsIgnoredGroups = (require("sdk/simple-prefs").prefs.pref_groupsToIgnore);
+         if()
+         {}
+         */
+
+
+
+
+         // shorten URL-title
+         //
+         prefsEnableShortURLTitle = (require("sdk/simple-prefs").prefs.pref_enableShortURLTitles);
+         if (prefsEnableShortURLTitle == true) // if shorten url-title is enabled
+         {
+            // get url title shorten length
+            prefsLengthURLTitle = (require("sdk/simple-prefs").prefs.pref_shortenURLTitleLength);
+
+            if (currentBookmarkTitle.length >= prefsLengthURLTitle) {
+               currentBookmarkTitle = currentBookmarkTitle.substring(0, prefsLengthURLTitle) + " ..";
+            }
          }
 
-         // Limit title to X chars - For Display
-         if (currentBookmarkURL.length >= 25) {
-            currentBookmarkURLForDisplay = currentBookmarkURL.substring(0, 25) + " ..";
+
+         // shorten URL
+         //
+         currentBookmarkURLForDisplay = currentBookmarkURL; // fill variable which is used for display
+         // simplify url
+         currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("http://", ""); // remove http://
+         currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("https://", ""); // remove https://
+         // get related preferences
+         prefsEnableShortURLs = (require("sdk/simple-prefs").prefs.pref_enableShortURLs);
+         prefsLengthURLs = (require("sdk/simple-prefs").prefs.pref_shortenURLLength);     // get url title shorten length
+         // shorten - if needed
+         if ((prefsEnableShortURLs == true) && (currentBookmarkURLForDisplay.length >= prefsLengthURLs))  // if shorten url-title is enabled
+         {
+            currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.substring(0, prefsLengthURLs) + " ..";
          }
-         else {
-            currentBookmarkURLForDisplay = currentBookmarkURL;
-         }
+
 
 
          // Check if we created already a div for this group or not
@@ -237,8 +265,8 @@ function updateHTMLIndex() {
 
          // add the actual link to the related group-div
          tab.attach({
-         //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarks[i]["url"].toString() + ">" + currentBookmarks[i]["title"].toString() + "&nbsp;<span class=bookmarkURL>" + currentBookmarks[i]["url"].toString() + "</span></a><br>';"
-         contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
+            //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarks[i]["url"].toString() + ">" + currentBookmarks[i]["title"].toString() + "&nbsp;<span class=bookmarkURL>" + currentBookmarks[i]["url"].toString() + "</span></a><br>';"
+            contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
          });
 
          // done - go to the next array-item

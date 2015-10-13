@@ -12,7 +12,55 @@
    "license": "MIT",
 
 
-   "preferences": [{
+   "preferences": [
+      {
+         "type": "bool",
+         "name": "pref_enableShortURLTitles",
+         "value": true,
+         "title": "Enable URL-title shortening",
+         "description": "Shortens the displayed URL title"
+      },
+      {
+         "description": "Chars used for displaying url title",
+         "name": "pref_shortenURLTitleLength",
+         "type": "integer",
+         "value": 22,
+         "title": "Define a max URL title length"
+      },
+
+
+
+      {
+         "type": "bool",
+         "name": "pref_enableShortURLs",
+         "value": true,
+         "title": "Enable URL shortening",
+         "description": "Shortens the displayed URL"
+      },
+      {
+         "description": "Chars used for displaying url",
+         "name": "pref_shortenURLLength",
+         "type": "integer",
+         "value": 27,
+         "title": "Define a max URL title length"
+      },
+
+
+
+
+      {
+              "name": "pref_groupsToIgnore",
+              "title": "Groups to ignore",
+              "description": "The following groups will not be displayed (sep by semikolon)",
+              "type": "string",
+              "value": ""
+          },
+
+
+
+
+
+      {
       "type": "bool",
       "name": "pref_showURL",
       "value": true,
