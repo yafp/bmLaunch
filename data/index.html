@@ -29,9 +29,11 @@
       </div>
       <!-- page-header -->
 
+      <input type="text" id="searchBox" placeholder="Seach" onkeyup="doSearch();" autocomplete="off">
       <button type="button" class="btn btn-default btn-xs" onclick="alert('Dummy');"><i class="fa fa-refresh"></i> Reload</button>
       <br>
       <br>
+
 
       <!-- Insert Bookmarks here -->
       <div class="row">
@@ -45,9 +47,12 @@
       <!-- Placed at the end of the document so the pages load faster -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
+      <script src="js/jquery.highlight.js"></script>
+      <script src="js/bmLaunch.js"></script>
       <script>
          $(document).ready(function() {
             console.log("document is ready!");
+            $("#searchBox").focus();
          });
       </script>
 </body>
