@@ -6,36 +6,55 @@
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1">
    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-   <meta name="description" content="">
+   <meta name="description" content="bmLaunch is an addon for Mozilla Firefox which displays a single page featuring all bookmarks">
    <meta name="author" content="fidel">
    <link rel="shortcut icon" href="fa-external-link-square_16_0_000000_none.png">
-
    <title>bmLaunch</title>
-
    <!-- Bootstrap core CSS -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
    <!-- Font Awesome CSS -->
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
    <!-- Custom styles for this template -->
    <link href="css/bmLaunch.css" rel="stylesheet">
+   <script src="../index.js"></script>
 </head>
 
 <body>
    <div class="container">
       <div class="page-header">
-         <h1><i class="fa fa-external-link-square"></i> bmLaunch
-
-            <input type="text" id="searchBox" placeholder="Search" onkeyup="doSearch();" autocomplete="off">
+         <h1>
+            <i class="fa fa-external-link-square"></i> bmLaunch
+            <input type="text" id="searchBox" placeholder="search" onkeyup="doSearch();" autocomplete="off">
             <small> ... your bookmarks</small>
          </h1>
-      </div>
-      <!-- page-header -->
+      </div> <!-- page-header -->
+
 
       <!--
+      https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
+      -->
+      <input id="works" type="button" value="I will work"/>
+      <input id="fails" type="button" value="I will not work"/>
+
+      <script>
+         var works = document.getElementById("works");
+         works.addEventListener("click", function() {
+           alert(clonedContentScriptObject.greeting);
+         }, false);
+
+         var fails = document.getElementById("fails");
+         fails.addEventListener("click", function() {
+           alert(assignedContentScriptObject.greeting);
+         }, false);
+      </script>
+
+
+
+
+
+
+
       <button type="button" class="btn btn-default btn-xs" onclick="alert('Dummy');"><i class="fa fa-refresh"></i> Reload</button>
-   -->
-
-
 
       <!-- Insert Bookmarks here -->
       <div class="row">
@@ -51,12 +70,12 @@
       <script src="js/bootstrap.min.js"></script>
       <script src="js/jquery.highlight.js"></script>
       <script src="js/bmLaunch.js"></script>
+      <script src="../index.js"></script>
       <script>
          $(document).ready(function() {
             console.log("document is ready!");
-            $("#searchBox").focus();
+            $("#searchBox").focus();   // mouse-focus to search field
          });
       </script>
 </body>
-
 </html>

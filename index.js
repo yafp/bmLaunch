@@ -1,6 +1,15 @@
 /*
 Some documentation links:
 
+- Addons:
+   https://developer.mozilla.org/de/Add-ons
+
+- Communicating with the content scripts:
+   https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Modifying_the_Page_Hosted_by_a_Tab
+
+- Interacting with Page Scripts:
+   https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
+
 - Searching bookmarks:
    https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/places_bookmarks
 
@@ -15,10 +24,35 @@ Some documentation links:
 */
 
 
+
+
+// https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
+/*
+var tabs = require("sdk/tabs");
+var self = require("sdk/self");
+
+tabs.open({
+  url: self.data.url("index.html"),
+  onReady: attachScript
+});
+
+function attachScript(tab) {
+  tab.attach({
+    contentScriptFile: self.data.url("foo.js")
+  });
+}
+*/
+
+
+
+
+
+
 // APP-BUTTON
 //
 var buttons = require('sdk/ui/button/action');
 var tabs = require("sdk/tabs");
+var self = require("sdk/self");
 
 var currentBookmarks = new Array();
 
@@ -99,14 +133,13 @@ function readAllBookmarks() {
    }).on("end", function(results) {
 
       for (var i = 0; i < results.length; ++i) {
-         console.log("");
-         console.log(results[i]);
+         //console.log("");
+         //console.log(results[i]);
 
          // save values in public array
          currentBookmarks[i] = results[i];
       }
 
-      console.log("");
       console.log("### function: readAllBookmarks() finished");
    });
 }
@@ -121,7 +154,7 @@ function readAllBookmarks() {
 // --------------------------------------------------
 function updateHTMLIndex() {
 
-   console.log("### function handleClick() started");
+   console.log("### function: updateHTMLIndex() started");
 
    // Open an URL (here: addon-ui -> /data/index,html)
    tabs.open({
@@ -131,6 +164,13 @@ function updateHTMLIndex() {
 
 
    function runScript(tab) {
+
+      // run other js file
+      tab.attach({
+         contentScriptFile: self.data.url("js/foo.js")
+      });
+
+
 
       // init variable
       var createdGroupDivs = new Array(); // control Array which contains the names of all created group divs
@@ -174,14 +214,15 @@ function updateHTMLIndex() {
          if (addCurrentBookmark == true) {
             // shorten URL-title
             //
+            currentBookmarkTitleForDisplay = currentBookmarkTitle;
             prefsEnableShortURLTitle = (require("sdk/simple-prefs").prefs.pref_enableShortURLTitles);
             if (prefsEnableShortURLTitle == true) // if shorten url-title is enabled
             {
                // get url title shorten length
                prefsLengthURLTitle = (require("sdk/simple-prefs").prefs.pref_shortenURLTitleLength);
 
-               if (currentBookmarkTitle.length >= prefsLengthURLTitle) {
-                  currentBookmarkTitle = currentBookmarkTitle.substring(0, prefsLengthURLTitle) + " ..";
+               if (currentBookmarkTitleForDisplay.length >= prefsLengthURLTitle) {
+                  currentBookmarkTitleForDisplay = currentBookmarkTitleForDisplay.substring(0, prefsLengthURLTitle) + " ..";
                }
             }
 
@@ -214,20 +255,17 @@ function updateHTMLIndex() {
                // add to control-Array
                createdGroupDivs.push(currentGroupNameID);
 
-               // generate a color for this tab & group
-               var new_light_color = 'rgb(' + (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
-                  (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
-                  (Math.floor((256 - 229) * Math.random()) + 230) + ')';
-
-               // open a div - with a random background color
-               bordertyp = "border-color:red;";
+               // generate a color for this bookmark-group-div
+               var new_light_color = generateRandomRGBColor();
 
                tab.attach({
                   //3 cols
                   contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-4\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
-                     // vs.
-                     // 4 cols:
-                     //contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-3\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
+                  // vs.
+                  // 4 cols:
+                  //contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-3\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; "
+
+                  //contentScript vs contentScriptFile
                });
 
                // write Name of Bookmark Group to new div
@@ -247,17 +285,15 @@ function updateHTMLIndex() {
             //
             // check if url should be displayed
             prefsEnableURL = (require("sdk/simple-prefs").prefs.pref_showURL);
-
             if (prefsEnableURL == true) // Add url title and url itself
             {
                tab.attach({
-                  //contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span>&nbsp;<span class=bookmarkURL>#" + currentBookmarkTags + "__</span></a><br>';"
-                  contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
+                  contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + " title=\""+currentBookmarkTitle+"\">" + currentBookmarkTitleForDisplay + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
                });
             } else // just add the title
             {
                tab.attach({
-                  contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + ">" + currentBookmarkTitle + "</a><br>';"
+                  contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + " title=\""+currentBookmarkTitle+"\">" + currentBookmarkTitleForDisplay + "</a><br>';"
                });
             }
          }
@@ -265,6 +301,7 @@ function updateHTMLIndex() {
          // done - go to the next array-item
       } // end of loop
    }
+   console.log("### function: updateHTMLIndex() finished");
 }
 // --------------------------------------------------
 
@@ -285,5 +322,22 @@ function handleClick(state) {
 // --------------------------------------------------
 function isInArray(array, search) {
    return array.indexOf(search) >= 0;
+}
+// --------------------------------------------------
+
+
+
+// --------------------------------------------------
+// generate a random rgb color
+// --------------------------------------------------
+function generateRandomRGBColor()
+{
+   var new_light_color = 'rgb(' + (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
+      (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
+      (Math.floor((256 - 229) * Math.random()) + 230) + ')';
+
+   console.log("Generated the random light color: "+new_light_color);
+
+   return new_light_color;
 }
 // --------------------------------------------------
