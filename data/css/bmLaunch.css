@@ -10,25 +10,25 @@ body {
 
 }
 
-
 bookmarkDiv {
-
 }
-
 
 a{
    /* color: grey; */
+   color: #CC6600;
    font-size: 90%;
+
 }
 
 a:hover{
    text-decoration: none;
+   color: #CC3300;
 }
 
 
 .bookmarkURL{
    font-size: 80%;
-   color: dimgrey;
+   color: #484848;
    background-color: lightgrey;
    padding-left: 10px;
    padding-right: 10px;
@@ -42,7 +42,12 @@ h4{
 }
 
 
-.highlight { background-color: yellow }
+.highlight {
+   background-color: #f4e0cc;
+   border-color: #663300;
+   border-style: solid;
+   border-width: 1px;
+}
 
 
 
