@@ -22,34 +22,11 @@ Some documentation links:
 - Preferences:
    https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/simple-prefs
 
-
    to check:
    http://louisremi.com/2011/12/07/mozilla-addons-interactions-between-content-scripts-and-pages/
 
 */
 
-
-
-
-// https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
-/*
-var tabs = require("sdk/tabs");
-var self = require("sdk/self");
-
-tabs.open({
-  url: self.data.url("index.html"),
-  onReady: attachScript
-});
-
-function attachScript(tab) {
-  tab.attach({
-    contentScriptFile: self.data.url("foo.js")
-  });
-}
-*/
-
-
-console.log("index.js - 1");
 
 
 
@@ -308,6 +285,16 @@ function updateHTMLIndex() {
       tab.attach({
          contentScriptFile: self.data.url("js/stopMainIconSpin.js")
       });
+
+
+      // display version number
+      var addonVersion = require("./package.json").version;
+      tab.attach({
+         //contentScript: "version.innerHTML  += "+ addonVersion +";"
+         contentScript: "version.innerHTML += '" + addonVersion + "'; "
+
+      });
+
 
    }
 
