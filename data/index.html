@@ -23,38 +23,48 @@
    <div class="container">
       <div class="page-header">
          <h1>
-            <i class="fa fa-external-link-square"></i> bmLaunch
+            <a href="index.html"><i class="fa fa-external-link-square fa-spin" id="mainIcon"></i></a> bmLaunch
             <input type="text" id="searchBox" placeholder="search" onkeyup="doSearch();" autocomplete="off">
             <small> ... your bookmarks</small>
          </h1>
-      </div> <!-- page-header -->
+      </div>
+      <!-- page-header -->
 
 
       <!--
       https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
       -->
-      <input id="works" type="button" value="I will work"/>
-      <input id="fails" type="button" value="I will not work"/>
+      <!--
+      <input id="works" type="button" value="I will work" />
+      <input id="fails" type="button" value="I will not work" />
+      <br><br>
 
       <script>
          var works = document.getElementById("works");
          works.addEventListener("click", function() {
-           alert(clonedContentScriptObject.greeting);
+            alert(clonedContentScriptObject.greeting);
          }, false);
 
          var fails = document.getElementById("fails");
          fails.addEventListener("click", function() {
-           alert(assignedContentScriptObject.greeting);
+            alert(assignedContentScriptObject.greeting);
          }, false);
       </script>
+   -->
 
-
-
-
-
-
-
+      <!--
       <button type="button" class="btn btn-default btn-xs" onclick="alert('Dummy');"><i class="fa fa-refresh"></i> Reload</button>
+      -->
+
+
+
+      <!-- progress bar -->
+      <!--
+      <div class="progress progress-striped active">
+         <div class="progress-bar" style="width: 0%;" id="pageLoadProgress">Loading</div>
+      </div>
+      -->
+
 
       <!-- Insert Bookmarks here -->
       <div class="row">
@@ -70,12 +80,42 @@
       <script src="js/bootstrap.min.js"></script>
       <script src="js/jquery.highlight.js"></script>
       <script src="js/bmLaunch.js"></script>
+      <!--
       <script src="../index.js"></script>
+   -->
       <script>
          $(document).ready(function() {
-            console.log("document is ready!");
-            $("#searchBox").focus();   // mouse-focus to search field
+            console.log("index.html: document is ready!");
+            $("#searchBox").focus(); // mouse-focus to search field
+            $("#bookmarkDiv").fadeOut(0); // hide bookmarks
+
+            // progress bar
+            /*
+            var progress = setInterval(function() {
+               var $bar = $('.progress-bar');
+
+               if ($bar.width() >= 400) {
+                  clearInterval(progress);
+                  $('.progress').removeClass('active');
+               } else {
+                  $bar.width($bar.width() + 40);
+               }
+               //$bar.text($bar.width()/4 + "%");
+               $bar.text("Reading bookmarks (X of Y)");
+            }, 800);
+            */
+            //$('.progress-bar').hide();
+
+            $("#bookmarkDiv").fadeIn(2000); // hide bookmarks
+
          });
       </script>
+
+
+   </div>
+   <!-- container -->
+
+
 </body>
+
 </html>

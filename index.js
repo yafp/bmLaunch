@@ -21,6 +21,11 @@ Some documentation links:
 
 - Preferences:
    https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/simple-prefs
+
+
+   to check:
+   http://louisremi.com/2011/12/07/mozilla-addons-interactions-between-content-scripts-and-pages/
+
 */
 
 
@@ -44,7 +49,7 @@ function attachScript(tab) {
 */
 
 
-
+console.log("index.js - 1");
 
 
 
@@ -60,9 +65,9 @@ var button = buttons.ActionButton({
    id: "mozilla-link",
    label: "Open bmLaunch",
    icon: {
-      "16": "./fa-external-link-square_16_0_000000_none.png",
-      "32": "./fa-external-link-square_32_0_000000_none.png",
-      "64": "./fa-external-link-square_64_0_000000_none.png"
+      "16": "./img/fa-external-link-square_16_0_000000_none.png",
+      "32": "./img/fa-external-link-square_32_0_000000_none.png",
+      "64": "./img/fa-external-link-square_64_0_000000_none.png"
    },
    onClick: handleClick
 });
@@ -133,7 +138,6 @@ function readAllBookmarks() {
    }).on("end", function(results) {
 
       for (var i = 0; i < results.length; ++i) {
-         //console.log("");
          //console.log(results[i]);
 
          // save values in public array
@@ -208,9 +212,7 @@ function updateHTMLIndex() {
 
 
 
-
-
-
+         // if the current bookmark is not in a blacklisted group - try to add it
          if (addCurrentBookmark == true) {
             // shorten URL-title
             //
@@ -250,9 +252,9 @@ function updateHTMLIndex() {
                // nothing to do
             } else {
                // div for this group doesnt exist yet
-               // create the div & and add its name to the control script
+               // create the div & and add its name to the page via content script
 
-               // add to control-Array
+               // add current div to control-Array
                createdGroupDivs.push(currentGroupNameID);
 
                // generate a color for this bookmark-group-div
@@ -300,7 +302,16 @@ function updateHTMLIndex() {
 
          // done - go to the next array-item
       } // end of loop
+
+
+      // stop spinning the main icon via external JS
+      tab.attach({
+         contentScriptFile: self.data.url("js/stopMainIconSpin.js")
+      });
+
    }
+
+
    console.log("### function: updateHTMLIndex() finished");
 }
 // --------------------------------------------------
@@ -329,6 +340,7 @@ function isInArray(array, search) {
 
 // --------------------------------------------------
 // generate a random rgb color
+//             output example: rgb(230,242,244)
 // --------------------------------------------------
 function generateRandomRGBColor()
 {
@@ -336,7 +348,7 @@ function generateRandomRGBColor()
       (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
       (Math.floor((256 - 229) * Math.random()) + 230) + ')';
 
-   console.log("Generated the random light color: "+new_light_color);
+   //console.log("Generated the random light color: "+new_light_color);
 
    return new_light_color;
 }
