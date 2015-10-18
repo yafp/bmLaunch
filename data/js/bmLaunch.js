@@ -5,7 +5,7 @@
 function doSearch()
 {
    currentSearch = $("#searchBox").val();
-   console.log("Current search phrase: "+currentSearch);
+   //console.log("Current search phrase: "+currentSearch);
 
    // remove all existing highlights
    $("#bookmarkDiv").unhighlight();

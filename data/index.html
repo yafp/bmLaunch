@@ -8,7 +8,7 @@
    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
    <meta name="description" content="bmLaunch is an addon for Mozilla Firefox which displays a single page featuring all bookmarks">
    <meta name="author" content="fidel">
-   <link rel="shortcut icon" href="img/fa-external-link-square_16_0_000000_none.png">
+   <link rel="shortcut icon" href="img/fa-external-link-square_16_0_cc6600_none.png">
    <title>bmLaunch</title>
    <!-- Bootstrap core CSS -->
    <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -24,19 +24,20 @@
       <div class="page-header">
          <h1>
             <a href="index.html"><i class="fa fa-external-link-square fa-spin" id="mainIcon"></i></a> bmLaunch
-            <input type="text" id="searchBox" placeholder="search" onkeyup="doSearch();" autocomplete="off">
+            <input type="text" id="searchBox" placeholder="search" onkeyup="doSearch();" autocomplete="off" accesskey="s">
+            <i id="filtersubmit" class="fa fa-search"></i>
             <small> ... your bookmarks</small>
          </h1>
 
-         <small>
-            <i id="version">v </i> &nbsp;|&nbsp;
-            <a href="https://github.com/yafp/bmLaunch">Code</a>&nbsp;|&nbsp;
-            <a href="https://github.com/yafp/bmLaunch/issues">Issues</a>&nbsp;|&nbsp;
-            <a href="https://github.com/yafp/bmLaunch/wiki">Wiki</a>
-         </small>
+            <small>
+            <i id="version"></i> &nbsp;|&nbsp;
+            <a href="https://github.com/yafp/bmLaunch" accesskey="c">Code</a>&nbsp;|&nbsp;
+            <a href="https://github.com/yafp/bmLaunch/issues" accesskey="i">Issues</a>&nbsp;|&nbsp;
+            <a href="https://github.com/yafp/bmLaunch/wiki" accesskey="w">Wiki</a>&nbsp;|
+            </small>
+
       </div>
       <!-- page-header -->
-
 
 
       <!--
@@ -58,19 +59,10 @@
             alert(assignedContentScriptObject.greeting);
          }, false);
       </script>
-   -->
+      -->
 
       <!--
       <button type="button" class="btn btn-default btn-xs" onclick="alert('Dummy');"><i class="fa fa-refresh"></i> Reload</button>
-      -->
-
-
-
-      <!-- progress bar -->
-      <!--
-      <div class="progress progress-striped active">
-         <div class="progress-bar" style="width: 0%;" id="pageLoadProgress">Loading</div>
-      </div>
       -->
 
 
@@ -87,42 +79,37 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
       <script src="js/bootstrap.min.js"></script>
       <script src="js/jquery.highlight.js"></script>
+      <script src="js/shortcut.js"></script>
       <script src="js/bmLaunch.js"></script>
       <!--
       <script src="../index.js"></script>
-   -->
+      -->
       <script>
          $(document).ready(function() {
             console.log("index.html: document is ready!");
-            $("#searchBox").focus(); // mouse-focus to search field
+
             $("#bookmarkDiv").fadeOut(0); // hide bookmarks
+            $("#searchBox").focus(); // mouse-focus to search field
 
-            // progress bar
-            /*
-            var progress = setInterval(function() {
-               var $bar = $('.progress-bar');
-
-               if ($bar.width() >= 400) {
-                  clearInterval(progress);
-                  $('.progress').removeClass('active');
-               } else {
-                  $bar.width($bar.width() + 40);
+            /* Shortcut for ESC */
+            shortcut.add("ESC",function()
+            {
+               if ($("#searchBox").is(":focus")) // if search has already the focus - reset the content
+               {
+                  $("#searchBox").val("");
                }
-               //$bar.text($bar.width()/4 + "%");
-               $bar.text("Reading bookmarks (X of Y)");
-            }, 800);
-            */
-            //$('.progress-bar').hide();
+               else // set focus to search field
+               {
+                  $("#searchBox").focus(); // mouse-focus to search field
+               }
+            });
 
-            $("#bookmarkDiv").fadeIn(2000); // hide bookmarks
-
+            $("#bookmarkDiv").fadeIn(2000); // fade in thr bookmark-groups
          });
       </script>
 
-
    </div>
    <!-- container -->
-
 
 </body>
 

@@ -22,6 +22,12 @@ Some documentation links:
 - Preferences:
    https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/simple-prefs
 
+- Favicon Handling
+   https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/places_favicon
+
+- Bookmark observer
+   https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Using_XPCOM_without_chrome#Bookmarks_Observer
+
    to check:
    http://louisremi.com/2011/12/07/mozilla-addons-interactions-between-content-scripts-and-pages/
 
@@ -42,9 +48,9 @@ var button = buttons.ActionButton({
    id: "mozilla-link",
    label: "Open bmLaunch",
    icon: {
-      "16": "./img/fa-external-link-square_16_0_000000_none.png",
-      "32": "./img/fa-external-link-square_32_0_000000_none.png",
-      "64": "./img/fa-external-link-square_64_0_000000_none.png"
+      "16": "./img/fa-external-link-square_16_0_cc6600_none.png",
+      "32": "./img/fa-external-link-square_32_0_cc6600_none.png",
+      "64": "./img/fa-external-link-square_64_0_cc6600_none.png"
    },
    onClick: handleClick
 });
@@ -291,7 +297,7 @@ function updateHTMLIndex() {
       var addonVersion = require("./package.json").version;
       tab.attach({
          //contentScript: "version.innerHTML  += "+ addonVersion +";"
-         contentScript: "version.innerHTML += '" + addonVersion + "'; "
+         contentScript: "version.innerHTML += 'Build " + addonVersion + "'; "
 
       });
 

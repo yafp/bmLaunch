@@ -2,6 +2,15 @@
  * Style tweaks
  *
  * http://www.color-hex.com/color/cc6600
+ *
+ * Used colors:
+ *
+ * main-orange:            #CC6600;
+
+ * dark-orange:            #CC3300;
+ * related brown:          #663300;
+ * related light orange:   #f4e0cc;
+ *
  * --------------------------------------------------
  */
 html,
@@ -12,21 +21,37 @@ body {
 
 }
 
-bookmarkDiv {
-}
-
+/* Links */
 a{
-   /* color: grey; */
    color: #CC6600;
    font-size: 90%;
-
 }
-
 a:hover{
    text-decoration: none;
    color: #CC3300;
 }
 
+
+
+/* Main-content - Bookmarks */
+/* */
+bookmarkDiv {
+}
+
+.col-lg-4
+{
+   border-width: 1px;
+   border-style: solid;
+   border-color: lightgrey;
+   margin-bottom: 2px;
+   padding-bottom:5px;
+
+}
+
+h4{
+   padding: 0px;
+   text-decoration: underline;
+}
 
 .bookmarkURL{
    font-size: 80%;
@@ -38,12 +63,8 @@ a:hover{
 }
 
 
-h4{
-   padding: 0px;
-   text-decoration: underline;
-}
 
-
+/* Highlighted Text */
 .highlight {
    background-color: #f4e0cc;
    border-color: #663300;
@@ -52,13 +73,27 @@ h4{
 }
 
 
+/* Keyboard (Accesskey-related) */
+kbd {
+    /* font-family: monospace; */
+    text-decoration: underline;
+}
 
-.col-lg-4
-{
-   border-width: 1px;
-   border-style: solid;
-   border-color: lightgrey;
-   margin-bottom: 2px;
-   padding-bottom:5px;
 
+
+/* Filter-Icon on the right side of search-field */
+#filtersubmit {
+  position: relative;
+  z-index: 1;
+  left: -50px;
+  top: 1px;
+  color: #7B7B7B;
+  cursor: pointer;
+  width: 0;
+}
+
+
+
+input{
+   text-align:center;
 }
