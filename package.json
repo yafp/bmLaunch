@@ -1,8 +1,10 @@
 {
    "title": "bmLaunch",
    "name": "bmlaunch",
-   "version": "0.0.6",
+   "version": "0.0.7",
    "description": "Your bookmarks acting as launchpad",
+   "homepage": "https://github.com/yafp/bmLaunch",
+   "icon": "resource://bmlaunch/data/img/fa-external-link-square_32_0_cc6600_none.png",
    "main": "index.js",
    "author": "yafp",
    "engines": {
