@@ -6,10 +6,9 @@ For each bookmark-group it generates a div in an individual color featuring all 
 
 ## Getting started (for developers on Linux)
 ### Installing Requirements
-1. Requirements: npm
+1. Requirements: npm & jpm
 
 > sudo apt install npm
-2. Install jpm
 
 > sudo npm install jpm --global
 
