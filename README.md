@@ -9,7 +9,6 @@ For each bookmark-group it generates a div in an individual color featuring all 
 1. Requirements: npm
 
 > sudo apt install npm
-
 2. Install jpm
 
 > sudo npm install jpm --global
@@ -20,6 +19,13 @@ For each bookmark-group it generates a div in an individual color featuring all 
 2. Run addon in a new empty temporary firefox profile
 
 > jpm run -b $(which firefox)
+
+
+### Run Addon-Tests while developing
+1. Navigate to the project folder
+2. Run addon in a new empty temporary firefox profile
+
+> jpm test -b $(which firefox)
 
 
 ### Generating a build
