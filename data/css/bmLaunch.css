@@ -63,7 +63,6 @@ h4{
 }
 
 
-
 /* Highlighted Text */
 .highlight {
    background-color: #f4e0cc;
@@ -73,14 +72,8 @@ h4{
 }
 
 
-/* Keyboard (Accesskey-related) */
-kbd {
-    /* font-family: monospace; */
-    text-decoration: underline;
-}
 
-
-
+/* Search */
 /* Filter-Icon on the right side of search-field */
 #filtersubmit {
   position: relative;
@@ -92,8 +85,14 @@ kbd {
   width: 0;
 }
 
-
-
 input{
    text-align:center;
+}
+
+
+
+
+/* UNSORTED */
+u{
+   text-decoration:underline;
 }
