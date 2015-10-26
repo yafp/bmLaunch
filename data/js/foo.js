@@ -1,7 +1,7 @@
-//console.log("log from /data/js/foo.js");
-//alert("Alert-Dialog from /data/js/foo.js");
-
 // Handling the button-clicks
-var contentScriptObject = {"greeting" : "hello from add-on"};
+var contentScriptObject = {"greeting" : "hello from add-on - foo.js"};
 unsafeWindow.clonedContentScriptObject = cloneInto(contentScriptObject, unsafeWindow);
-unsafeWindow.assignedContentScriptObject = contentScriptObject;
+
+
+var contentScriptObject2 = {"greeting" : "hello from add-on2 - foo.js"};
+unsafeWindow.assignedContentScriptObject = cloneInto(contentScriptObject2, unsafeWindow);

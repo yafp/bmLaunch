@@ -1,11 +1,11 @@
 {
    "title": "bmLaunch",
    "name": "bmlaunch",
-   "version": "0.0.8",
+   "version": "0.0.9",
    "description": "Your bookmarks acting as launchpad",
    "homepage": "https://github.com/yafp/bmLaunch",
    "icon": "resource://bmlaunch/data/img/fa-external-link-square_32_0_cc6600_none.png",
-   "main": "index.js",
+   "main": "main.js",
    "author": "yafp",
    "engines": {
       "firefox": ">=38.0a1",
@@ -60,6 +60,13 @@
          "value": true,
          "title": "Show URL",
          "description": "Shows URL behind the title"
+      },
+      {
+         "type": "bool",
+         "name": "pref_makeHomeAndNewTab",
+         "value": false,
+         "title": "Set bmLaunch as Homepage and ...",
+         "description": "Sets bmLaunch as homepage and default for new tabs"
       }
    ]
 }

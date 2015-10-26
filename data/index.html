@@ -16,16 +16,13 @@
    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
    <!-- Custom styles for this template -->
    <link href="css/bmLaunch.css" rel="stylesheet">
-   <!--
-   <script src="../index.js"></script>
--->
 </head>
 
 <body>
    <div class="container">
       <div class="page-header">
          <h1>
-            <a href="index.html"><i class="fa fa-external-link-square fa-spin" id="mainIcon"></i></a> bmLaunch
+            <a href="index.html" title="Reload"><i class="fa fa-external-link-square fa-spin" id="mainIcon"></i></a> bmLaunch
             <input type="text" id="searchBox" placeholder="search" onkeyup="doSearch();" autocomplete="off" accesskey="s">
             <i id="filtersubmit" class="fa fa-search"></i>
             <small> ... your bookmarks</small>
@@ -45,9 +42,10 @@
       <!--
       https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
       -->
+
       <!--
-      <input id="works" type="button" value="I will work" />
-      <input id="fails" type="button" value="I will not work" />
+      <input id="works" type="button" value="Button1" />
+      <input id="fails" type="button" value="Button2" />
       <br><br>
 
       <script>
@@ -57,15 +55,18 @@
          }, false);
 
          var fails = document.getElementById("fails");
-         fails.addEventListener("click", function() {
+         fails.addEventListener("click", function()
+         {
             alert(assignedContentScriptObject.greeting);
          }, false);
       </script>
-      -->
+   -->
 
-      <!--
-      <button type="button" class="btn btn-default btn-xs" onclick="alert('Dummy');"><i class="fa fa-refresh"></i> Reload</button>
-      -->
+
+
+
+
+
 
 
       <!-- Insert Bookmarks here -->

@@ -7,9 +7,14 @@ function doSearch()
    currentSearch = $("#searchBox").val();
    //console.log("Current search phrase: "+currentSearch);
 
-   // remove all existing highlights
-   $("#bookmarkDiv").unhighlight();
+   $("#bookmarkDiv").unhighlight();    // remove all existing highlights
+   $("#bookmarkDiv").highlight(currentSearch, { caseSensitive: false });      // highlight everything in the div 'bookmarkDiv' whicbh contains this string
+}
 
-   // highlight everything in the div 'bookmarkDiv' whicbh contains this string
-   $("#bookmarkDiv").highlight(currentSearch, { caseSensitive: false });
+
+
+function dummy()
+{
+   console.log("dummy");
+   alert("Dummy");
 }
