@@ -1,7 +1,39 @@
-#bmLaunch
+bmLaunch
+=========
+
 ## About
 A Firefox Addon which acts as launchbad for bookmarks.
-For each bookmark-group it generates a div in an individual color featuring all the bookmarks you collected.
+It loads all bookmarks into a filterable table for each access.
+
+## Why
+I was in need for a Firefox-AddOn playground - simple as that.
+
+## Keyboard & Shortcuts
+### Classic shortcuts
+* ESC - Jumps focus to search or resets the content of search
+
+Normal shortcuts are realized via shortcut.js.
+
+
+### Accesskeys
+
+#### General Handling
+
+##### Linux & Windows
+
+> ALT + SHIFT + Accesskey
+
+##### Mac
+> CTRL + OPTION + Accesskey
+
+#### Usage in this Add-on
+* C - open the Github-Code page
+* I - open the Github-Issues page
+* W - open the Github-Wiki page
+* S - sets focus to search field
+
+
+
 
 
 ## Getting started (for developers on Linux)

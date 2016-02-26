@@ -2,20 +2,20 @@
 Some documentation links:
 
 - Communicating with the content scripts:
-   https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Modifying_the_Page_Hosted_by_a_Tab
+https://developer.mozilla.org/en-US/Add-ons/SDK/Tutorials/Modifying_the_Page_Hosted_by_a_Tab
 
 - Interacting with Page Scripts:
-   https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
-   http://louisremi.com/2011/12/07/mozilla-addons-interactions-between-content-scripts-and-pages/
+https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
+http://louisremi.com/2011/12/07/mozilla-addons-interactions-between-content-scripts-and-pages/
 
 - Package.json:
-   https://developer.mozilla.org/en-US/Add-ons/SDK/Tools/package_json
+https://developer.mozilla.org/en-US/Add-ons/SDK/Tools/package_json
 
 - Favicon Handling
-   https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/places_favicon
+https://developer.mozilla.org/en-US/Add-ons/SDK/Low-Level_APIs/places_favicon
 
 - Local storage:
-   https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/simple-storage
+https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/simple-storage
 */
 
 
@@ -103,7 +103,6 @@ function startBookmarkObserver() {
 
          //openAddonUI();
          //displayNotification("Bookmark added");
-
       }
    });
 
@@ -123,9 +122,9 @@ function startBookmarkObserver() {
 // Status:        works
 // --------------------------------------------------
 function handleClick(state) {
-   console.log("handleclick() started");
+   //console.log("handleclick() started");
    openAddonUI();
-   console.log("handleclick() finished\n");
+   //console.log("handleclick() finished\n");
 }
 // --------------------------------------------------
 
@@ -141,20 +140,16 @@ function handleClick(state) {
 // Status:     partly working
 // --------------------------------------------------
 function checkCurrentTab() {
-   console.log("checkCurrentTab() started");
+   //console.log("checkCurrentTab() started");
 
    var tabs = require('sdk/tabs');
-   console.log('active: ' + tabs.activeTab.url);
+   //console.log('active: ' + tabs.activeTab.url);
    if(tabs.activeTab.url === "resource://bmlaunch/data/index.html")
    {
-      console.log("----------- Should update addon tab view now");
+      //console.log("----------- Should update addon tab view now");
       reloadAddonTab(); // not working so far
    }
-   else {
-      console.log("++++++++++++ should no nothing");
-   }
-
-   console.log("checkCurrentTab() finished\n");
+   //console.log("checkCurrentTab() finished\n");
 }
 // --------------------------------------------------
 
@@ -168,11 +163,11 @@ function checkCurrentTab() {
 // Status:     Dummy / No function
 // --------------------------------------------------
 function reloadAddonTab() {
-   console.log("reloadAddonTab() started");
-   console.log("- Should reload tab now");
+   //console.log("reloadAddonTab() started");
+   //console.log("- Should reload tab now");
    //tabs.reload();
-   console.log("- Addon-UI reloaded");
-   console.log("reloadAddonTab() finished\n");
+   //console.log("- Addon-UI reloaded");
+   //console.log("reloadAddonTab() finished\n");
 }
 // --------------------------------------------------
 
@@ -190,7 +185,7 @@ function reloadAddonTab() {
 // Status:        works
 // --------------------------------------------------
 function openAddonUI() {
-   console.log("openAddonUI() started");
+   //console.log("openAddonUI() started");
    checkForDefaultHomepage(); // check if addon is set as homepage
    readAllBookmarks(); // fill the bookmark array
 
@@ -200,7 +195,7 @@ function openAddonUI() {
       onReady: generateHTMLPage
    });
 
-   console.log("openAddonUI() finished\n");
+   //console.log("openAddonUI() finished\n");
 }
 // --------------------------------------------------
 
@@ -215,17 +210,21 @@ function openAddonUI() {
 // --------------------------------------------------
 function generateHTMLPage(tab) {
 
-   console.log("generateHTMLPage() started");
+   //console.log("generateHTMLPage() started");
+
+   var favTableBody="" // variable which connects all table data
 
    // run other js file
-   tab.attach({
-      contentScriptFile: self.data.url("js/foo.js")
-   });
+   //tab.attach({
+   //   contentScriptFile: self.data.url("js/foo.js")
+   //});
 
    // init variable
    var createdGroupDivs = new Array(); // control Array which contains the names of all created group divs
 
-   // for all bookmarks do thefollowing:
+
+
+   // for all bookmarks do the following:
    for (var i = 0; i < currentBookmarks.length; i++) {
 
       // fill variables
@@ -240,109 +239,70 @@ function generateHTMLPage(tab) {
       // Reading preferences
       //    https://developer.mozilla.org/en-US/Add-ons/SDK/High-Level_APIs/simple-prefs
       //
-      // should this bookmark be ignored - because the group should be ignored?
-      //
-      var prefsEnableGroupBlacklisting = (require("sdk/simple-prefs").prefs.pref_enableGroupsFilter);
-      var addCurrentBookmark = false;
-      if (prefsEnableGroupBlacklisting == true) {
-         // read blacklisted group
-         var prefsIgnoredGroups = (require("sdk/simple-prefs").prefs.pref_groupsToIgnore);
-         //console.log("Blacklisted group: "+prefsIgnoredGroups);
 
-         if (currentGroupName == prefsIgnoredGroups) // ignore this bookmark
-         {
-            addCurrentBookmark = false;
-         } else {
-            addCurrentBookmark = true;
-         }
-      } else {
-         addCurrentBookmark = true;
-      }
+// shorten URL-title ???
+//
+var currentBookmarkTitleForDisplay = currentBookmarkTitle;
+var prefsLengthURLTitle = (require("sdk/simple-prefs").prefs.pref_shortenURLTitleLength);
+
+if ((currentBookmarkTitleForDisplay.length >= prefsLengthURLTitle) && (prefsLengthURLTitle != 0))
+{
+   currentBookmarkTitleForDisplay = currentBookmarkTitleForDisplay.substring(0, prefsLengthURLTitle) + " ..";
+}
 
 
 
-      // if the current bookmark is not in a blacklisted group - try to add it
-      if (addCurrentBookmark == true) {
-         // shorten URL-title
-         //
-         var currentBookmarkTitleForDisplay = currentBookmarkTitle;
-         var prefsEnableShortURLTitle = (require("sdk/simple-prefs").prefs.pref_enableShortURLTitles);
-         if (prefsEnableShortURLTitle == true) // if shorten url-title is enabled
-         {
-            // get url title shorten length
-            var prefsLengthURLTitle = (require("sdk/simple-prefs").prefs.pref_shortenURLTitleLength);
+// shorten URL ???
+//
+var currentBookmarkURLForDisplay = currentBookmarkURL; // fill variable which is used for display
+// simplify url
+currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("http://", ""); // remove http://
+currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("https://", ""); // remove https://
 
-            if (currentBookmarkTitleForDisplay.length >= prefsLengthURLTitle) {
-               currentBookmarkTitleForDisplay = currentBookmarkTitleForDisplay.substring(0, prefsLengthURLTitle) + " ..";
-            }
-         }
+var prefsLengthURLs = (require("sdk/simple-prefs").prefs.pref_shortenURLLength); // get defined url-length
+// shorten - if needed
+if ((prefsLengthURLs != 0) && (currentBookmarkURLForDisplay.length >= prefsLengthURLs)) // if url-shortening is enabled
+{
+   currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.substring(0, prefsLengthURLs) + " ..";
+}
 
 
-         // shorten URL
-         //
-         var currentBookmarkURLForDisplay = currentBookmarkURL; // fill variable which is used for display
-         // simplify url
-         currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("http://", ""); // remove http://
-         currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.replace("https://", ""); // remove https://
 
-         // get related preferences
-         var prefsEnableShortURLs = (require("sdk/simple-prefs").prefs.pref_enableShortURLs); // Is url-shortening enabled?
-         var prefsLengthURLs = (require("sdk/simple-prefs").prefs.pref_shortenURLLength); // get defined url-length
-         // shorten - if needed
-         if ((prefsEnableShortURLs == true) && (currentBookmarkURLForDisplay.length >= prefsLengthURLs)) // if url-shortening is enabled
-         {
-            currentBookmarkURLForDisplay = currentBookmarkURLForDisplay.substring(0, prefsLengthURLs) + " ..";
-         }
+// Neu - Adding bookmark to table
+// build table body into single var:
+favTableBody = favTableBody+"<tr><td>"+currentBookmarkTitleForDisplay+"</td><td><a href=" + currentBookmarkURL + " title=\"" + currentBookmarkTitle + "\">" + currentBookmarkURLForDisplay + "</a></td><td>"+currentGroupName+"</td></tr>";
+
+//tab.attach({
+//contentScript: "barbar.innerHTML += '<tr><td>"+currentBookmarkTitleForDisplay+"</td><td><a href=" + currentBookmarkURL + " title=\"" + currentBookmarkTitle + "\">" + currentBookmarkURL + "</a></td><td>"+currentBookmarkTags+"</td><td>"+currentGroupName+"</td></tr>'; " // create new div with individual color
+//});
+}
+// end of loop
+
+//console.log("looping over all favorites finished");
+//console.log(favTableBody);
+
+tab.attach({
+   contentScript: "barbar.innerHTML += '"+favTableBody+"'; " // create new div with individual color
+});
+//console.log("added pure HTML table to index");
 
 
-         // Check if we created already a div for this group or not
-         //
-         if (isInArray(createdGroupDivs, currentGroupNameID)) // we created already a div for this bookmark group
-         {
-            // nothing to do
-         } else // div for this group doesnt exist yet
-         {
-            // create the div & and add its name to the page via content script
-            createdGroupDivs.push(currentGroupNameID); // add current div to control-Array
-            var new_light_color = generateRandomRGBColor(); // generate a color for this bookmark-group-div
 
-            tab.attach({
-               contentScript: "bookmarkDiv.innerHTML += '<div class=\"col-xs-6 col-lg-4\" id=" + currentGroupNameID + " style=background-color:" + new_light_color + ">'; " // create new div with individual color
-            });
+// the url table is complete - make it a flexible dataTables now
+//console.log("initDataTable() started");
+tab.attach({
+   contentScriptFile: [self.data.url("js/DataTables/jQuery-2.2.0/jquery-2.2.0.min.js"), self.data.url("js/DataTables/DataTables-1.10.11/js/jquery.dataTables.min.js"), self.data.url("js/DataTables/Scroller-1.4.1/js/dataTables.scroller.min.js"), self.data.url("js/initDataTable.js")]
+});
+//console.log("initDataTable() finished");
 
-            // write Name of Bookmark Group to new div
-            tab.attach({
-               contentScript: currentGroupNameID + ".innerHTML  += '<h4>" + currentGroupName + "</h4></div>' ;"
-            });
-         }
 
-         // Add the actual bookmark-link to the related div
-         //
-         // check if url should be displayed
-         var prefsEnableURL = (require("sdk/simple-prefs").prefs.pref_showURL);
-         if (prefsEnableURL == true) // Add url title and url itself
-         {
-            tab.attach({
-               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + " title=\"" + currentBookmarkTitle + "\">" + currentBookmarkTitleForDisplay + "&nbsp;<span class=bookmarkURL>" + currentBookmarkURLForDisplay + "</span></a><br>';"
-            });
-         } else // just add the title
-         {
-            tab.attach({
-               contentScript: currentGroupNameID + ".innerHTML += '<a href=" + currentBookmarkURL + " title=\"" + currentBookmarkTitle + "\">" + currentBookmarkTitleForDisplay + "</a><br>';"
-            });
-         }
-      }
+var addonVersion = require("./package.json").version;
+tab.attach({
+   contentScript: "version.innerHTML += 'Build " + addonVersion + "'; ", // display version number below header-icon
+   contentScriptFile: self.data.url("js/stopMainIconSpin.js") // stop spinning the main icon via external JS
+});
 
-      // done - go to the next array-item
-   } // end of loop
-
-   var addonVersion = require("./package.json").version;
-   tab.attach({
-      contentScript: "version.innerHTML += 'Build " + addonVersion + "'; ", // display version number below header-icon
-      contentScriptFile: self.data.url("js/stopMainIconSpin.js") // stop spinning the main icon via external JS
-   });
-
-   console.log("generateHTMLPage() finished\n");
+//console.log("generateHTMLPage() finished\n");
 }
 // --------------------------------------------------
 
@@ -357,7 +317,7 @@ function generateHTMLPage(tab) {
 // Status:     works
 // --------------------------------------------------
 function readAllBookmarks() {
-   console.log("readAllBookmarks() started");
+   //console.log("readAllBookmarks() started");
 
    let {
       search, UNSORTED
@@ -378,7 +338,7 @@ function readAllBookmarks() {
       }
 
       console.log("- Bookmark count: " + currentBookmarks.length);
-      console.log("readAllBookmarks() finished\n");
+      //console.log("readAllBookmarks() finished\n");
    });
 }
 // --------------------------------------------------
@@ -438,7 +398,7 @@ function checkForDefaultHomepage() {
    } else {
       console.log("- bmLaunch is NOT set as homepage & default-tab");
    }
-   console.log("checkForDefaultHomepage() finished\n");
+   //console.log("checkForDefaultHomepage() finished\n");
 }
 // ---------------------------------------------------------------------------------------
 
@@ -471,11 +431,11 @@ function generateRandomRGBColor() {
    console.log("generateRandomRGBColor() started");
 
    var new_light_color = 'rgb(' + (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
-      (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
-      (Math.floor((256 - 229) * Math.random()) + 230) + ')';
+   (Math.floor((256 - 229) * Math.random()) + 230) + ',' +
+   (Math.floor((256 - 229) * Math.random()) + 230) + ')';
 
-   console.log("- new random color: " + new_light_color);
-   console.log("generateRandomRGBColor() finished\n");
+   //console.log("- new random color: " + new_light_color);
+   //console.log("generateRandomRGBColor() finished\n");
    return new_light_color;
 }
 // --------------------------------------------------

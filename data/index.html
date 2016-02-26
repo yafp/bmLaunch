@@ -1,116 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-   <meta charset="utf-8">
-   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-   <meta name="description" content="bmLaunch is an addon for Mozilla Firefox which displays a single page featuring all bookmarks">
-   <meta name="author" content="fidel">
-   <link rel="shortcut icon" href="img/fa-external-link-square_16_0_cc6600_none.png">
-   <title>bmLaunch</title>
-   <!-- Bootstrap core CSS -->
-   <link href="css/bootstrap.min.css" rel="stylesheet">
-   <!-- Font Awesome CSS -->
-   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
-   <!-- Custom styles for this template -->
-   <link href="css/bmLaunch.css" rel="stylesheet">
+	<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<meta charset="utf-8">
+	<meta name="description" content="bmLaunch is an addon for Mozilla Firefox which displays a single page featuring all bookmarks">
+	<meta name="author" content="fidel">
+	<link rel="shortcut icon" href="img/fa-external-link-square_16_0_cc6600_none.png">
+	<title>bmLaunch</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<!-- CSS -->
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
+	<!-- Font Awesome CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+	<!-- Custom styles for this template -->
+    <link href="css/bmLaunch.css" rel="stylesheet">
+	<!-- DataTables -->
+	<link href="js/DataTables/DataTables-1.10.11/css/jquery.dataTables.min.css" rel="stylesheet">
+
 </head>
-
 <body>
-   <div class="container">
-      <div class="page-header">
-         <h1>
-            <a href="index.html" title="Reload"><i class="fa fa-external-link-square fa-spin" id="mainIcon"></i></a> bmLaunch
-            <input type="text" id="searchBox" placeholder="search" onkeyup="doSearch();" autocomplete="off" accesskey="s">
-            <i id="filtersubmit" class="fa fa-search"></i>
-            <small> ... your bookmarks</small>
-         </h1>
+	<nav class="navbar navbar-fixed-top header">
+		<div class="col-md-12">
+			<div class="navbar-header">
+				<a href="index.html" class="navbar-brand"><i class="fa fa-external-link-square fa-spin" id="mainIcon"></i> bmLaunch</a>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse1"><i class="glyphicon glyphicon-search"></i></button>
+			</div>
 
-            <small>
-            <i id="version"></i> &nbsp;|&nbsp;
-            <a href="https://github.com/yafp/bmLaunch" accesskey="c"><u>C</u>ode</a>&nbsp;|&nbsp;
-            <a href="https://github.com/yafp/bmLaunch/issues" accesskey="i"><u>I</u>ssues</a>&nbsp;|&nbsp;
-            <a href="https://github.com/yafp/bmLaunch/wiki" accesskey="w"><u>W</u>iki</a>&nbsp;|
-            </small>
+			<div class="collapse navbar-collapse" id="navbar-collapse1">
+				<form class="navbar-form pull-left">
+					<div class="input-group" style="max-width:470px;">
+						<input type="text" id="searchBox" class="form-control" placeholder="Search" name="srch-term" autocomplete="off" accesskey="s">
+						<!--
+						<input type="text" id="searchBox" class="form-control" placeholder="Search_" name="srch-term" id="srch-term" onkeyup="doSearch();" autocomplete="off" accesskey="s">
+					-->
+						<div class="input-group-btn"><button class="btn btn-default btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button></div>
+					</div>
+				</form>
 
-      </div>
-      <!-- page-header -->
-
-
-      <!--
-      https://developer.mozilla.org/en-US/Add-ons/SDK/Guides/Content_Scripts/Interacting_with_page_scripts
-      -->
-
-      <!--
-      <input id="works" type="button" value="Button1" />
-      <input id="fails" type="button" value="Button2" />
-      <br><br>
-
-      <script>
-         var works = document.getElementById("works");
-         works.addEventListener("click", function() {
-            alert(clonedContentScriptObject.greeting);
-         }, false);
-
-         var fails = document.getElementById("fails");
-         fails.addEventListener("click", function()
-         {
-            alert(assignedContentScriptObject.greeting);
-         }, false);
-      </script>
-   -->
-
-
-
-
+				<ul class="nav navbar-nav navbar-right">
+				<!--
+				<li><a href="http://www.bootply.com" target="_ext">Bootply+</a></li>
+				-->
+				<!--
+				<li>
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-bell"></i></a>
+					<ul class="dropdown-menu">
+						<li><a href="#"><span class="badge pull-right">40</span>Link</a></li>
+						<li><a href="#"><span class="badge pull-right">2</span>Link</a></li>
+						<li><a href="#"><span class="badge pull-right">0</span>Link</a></li>
+						<li><a href="#"><span class="label label-info pull-right">1</span>Link</a></li>
+						<li><a href="#"><span class="badge pull-right">13</span>Link</a></li>
+					</ul>
+				</li>
+				-->
+				<!--
+				<li><a href="#" id="btnToggle"><i class="glyphicon glyphicon-th-large"></i></a></li>
+				-->
+				<!--
+				<li><a href="#"><i class="glyphicon glyphicon-user"></i></a></li>
+				-->
+			</ul>
+		</div>
+	</div>
+</nav>
 
 
 
+<!-- Second Navigation - Start -->
+<div class="navbar navbar-default" id="subnav">
+	<div class="col-md-12">
+		<div class="navbar-header">
 
-      <!-- Insert Bookmarks here -->
-      <div class="row">
-         <div id="bookmarkDiv"></div>
-      </div>
-      <!--/row-->
+			<a href="#" style="margin-left:15px;" class="navbar-btn btn btn-default btn-plus dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bars"></i>
+ More <small><i class="glyphicon glyphicon-chevron-down"></i></small></a>
+			<ul class="nav dropdown-menu">
+				<!--
+				<li><a href="#"><i class="glyphicon glyphicon-user" style="color:#1111dd;"></i> Profile</a></li>
+				<li><a href="#"><i class="glyphicon glyphicon-dashboard" style="color:#0000aa;"></i> Dashboard</a></li>
+				<li><a href="#"><i class="glyphicon glyphicon-inbox" style="color:#11dd11;"></i> Pages</a></li>
+				<li class="nav-divider"></li>
+				-->
+				<!--
+				<li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
+				<li class="nav-divider"></li>
+				-->
+				<li><a href="https://github.com/yafp/bmLaunch" target="_ext" accesskey="c"><i class="fa fa-code"></i> <u>C</u>ode</a></li>
+				<li><a href="https://github.com/yafp/bmLaunch/issues" target="_ext" accesskey="i"><i class="fa fa-bug"></i> <u>I</u>ssues</a></li>
+			</ul>
+
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse2">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+
+		</div>
+		<div class="collapse navbar-collapse" id="navbar-collapse2">
+			<ul class="nav navbar-nav navbar-right">
+				<li class="active"><a href="">Home</a></li>
+				<!--
+				<li><a href="#" role="button" data-toggle="modal" onclick="">History</a></li>
+				<li><a href="#" role="button" data-toggle="modal">Bookmarks Manager</a></li>
+			-->
+				<li><a href="#aboutModal" role="button" data-toggle="modal">About</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<!-- Second Navigation - End -->
 
 
-      <!-- Bootstrap core JavaScript
-    ================================================== -->
-      <!-- Placed at the end of the document so the pages load faster -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-      <script src="js/bootstrap.min.js"></script>
-      <script src="js/jquery.highlight.js"></script>
-      <script src="js/shortcut.js"></script>
-      <script src="js/bmLaunch.js"></script>
-      <script>
-         $(document).ready(function() {
-            console.log("index.html: document is ready!");
 
-            $("#bookmarkDiv").fadeOut(0); // hide bookmarks
-            $("#searchBox").focus(); // mouse-focus to search field
+<!--CONTENT - START -->
+<div class="container" id="main">
 
-            /* Shortcut for ESC */
-            shortcut.add("ESC",function()
-            {
-               if ($("#searchBox").is(":focus")) // if search has already the focus - reset the content
-               {
-                  $("#searchBox").val("");
-               }
-               else // set focus to search field
-               {
-                  $("#searchBox").focus(); // mouse-focus to search field
-               }
-            });
+	<!-- DataTable -->
+	<table id="example" class="display" cellspacing="0" width="100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>URL</th>
+				<th>Group</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th>Title</th>
+                <th>URL</th>
+                <th>Group</th>
+            </tr>
+        </tfoot>
+        <tbody id="barbar">
+			<!-- gets filled via main.js -->
+        </tbody>
+    </table>
 
-            $("#bookmarkDiv").fadeIn(2000); // fade in thr bookmark-groups
-         });
-      </script>
 
-   </div>
-   <!-- container -->
+	<!-- JavaScript
+	================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="js/DataTables/jQuery-2.2.0/jquery-2.2.0.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/jquery.highlight.js"></script>
+	<script src="js/shortcut.js"></script>
+	<script src="js/bmLaunch.js"></script>
+	<script src="js/scripts.js"></script>
+	<script>
+	$(document).ready(function() {
+		console.log("index.html: document is ready!");
+
+		// hiding and fading in again cuts the table head & footer - whyever
+		//$("#example").fadeOut(0); // hide core-bookmark-table
+
+		/* Shortcut for ESC */
+		shortcut.add("ESC",function()
+		{
+			if ($("#searchBox").is(":focus")) // if search has already the focus - reset the content
+			{
+				$("#searchBox").val("");
+			}
+			else // set focus to search field
+			{
+				$("#searchBox").focus(); // mouse-focus to search field
+			}
+		});
+
+		//$("#example").fadeIn(2000); // fade in thr bookmark-groups
+	});
+	</script>
+
+	<div class="clearfix"></div>
+
+	<!-- Footer - Start -->
+	<hr>
+	<div class="col-md-12 text-center">
+		<p>
+			<a href="https://github.com/yafp/bmLaunch" target="_ext">bmLaunch</a>
+			<i id="version"></i>
+		</p>
+	</div>
+	<hr>
+	<!-- Footer - End -->
+</div>
+<!-- CONTENT - END -->
+
+
+<!--MODAL ABOUT DIALOG - START -->
+<div id="aboutModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h2 class="text-center">About bmLaunch</h2>
+			</div>
+			<div class="modal-body">
+				<div class="col-md-12 text-center">
+					<p><a href="https://github.com/yafp/bmLaunch">bmLaunch</a><br> is made with <i class="glyphicon glyphicon-heart"></i> by <a href="http://yafp.de">yafp</a>.</p>
+					<p>Like many other projects it started as a playground to learn new technology.</p>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button class="btn" data-dismiss="modal" aria-hidden="true">OK</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--MODAL ABOUT DIALOG - END -->
 
 </body>
-
 </html>

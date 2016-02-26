@@ -1,7 +1,7 @@
 {
    "title": "bmLaunch",
    "name": "bmlaunch",
-   "version": "0.0.9",
+   "version": "0.1.0",
    "description": "Your bookmarks acting as launchpad",
    "homepage": "https://github.com/yafp/bmLaunch",
    "icon": "resource://bmlaunch/data/img/fa-external-link-square_32_0_cc6600_none.png",
@@ -11,55 +11,22 @@
       "firefox": ">=38.0a1",
       "fennec": ">=38.0a1"
    },
-   "license": "MIT",
+   "license": "GPL3",
 
    "preferences": [
       {
-         "type": "bool",
-         "name": "pref_enableShortURLTitles",
-         "value": true,
-         "title": "Enable short URL titles",
-         "description": "Shortens the displayed URL title"
-      }, {
-         "description": "Chars used for displaying url title",
+         "description": "Shrink URL title after x chars (0 = unlimited)",
          "name": "pref_shortenURLTitleLength",
          "type": "integer",
-         "value": 22,
-         "title": "Define a max URL title length"
+         "value": 0,
+         "title": "Max URL title length"
       },
       {
-         "type": "bool",
-         "name": "pref_enableShortURLs",
-         "value": true,
-         "title": "Enable short URLs",
-         "description": "Shortens the displayed URL"
-      }, {
-         "description": "Chars used for displaying url",
+         "description": "Shrink URL display after x chars (0 = unlimited)",
          "name": "pref_shortenURLLength",
          "type": "integer",
-         "value": 27,
-         "title": "Define a max URL title length"
-      },
-      {
-         "type": "bool",
-         "name": "pref_enableGroupsFilter",
-         "value": true,
-         "title": "Enables group blacklisting",
-         "description": "Enables filtering of defined groups"
-      },
-      {
-         "name": "pref_groupsToIgnore",
-         "title": "Groups to ignore",
-         "description": "The following groups will not be displayed (sep by semikolon)",
-         "type": "string",
-         "value": "Fast Dial"
-      },
-      {
-         "type": "bool",
-         "name": "pref_showURL",
-         "value": true,
-         "title": "Show URL",
-         "description": "Shows URL behind the title"
+         "value": 0,
+         "title": "Max URL length"
       },
       {
          "type": "bool",
