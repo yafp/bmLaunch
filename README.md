@@ -1,9 +1,16 @@
+[![License](https://img.shields.io/badge/license-GPL3-brightgreen.svg)](LICENSE)
+
+![Logo](https://raw.githubusercontent.com/yafp/bmLaunch/master/data/img/fa-external-link-square_64_0_cc6600_none.png)
+
 bmLaunch
 =========
 
 ## About
 A Firefox Addon which acts as launchbad for bookmarks.
 It loads all bookmarks into a filterable table for each access.
+
+![UI](https://raw.githubusercontent.com/yafp/bmLaunch/master/doc/currentVersion.png)
+
 
 ## Why
 I was in need for a Firefox-AddOn playground - simple as that.
