@@ -71,6 +71,13 @@ Normal shortcuts are realized via shortcut.js.
 
 > jpm xpi
 
+### Installing unsigned addons
+set
+> xpinstall.signatures.required
+to
+> false
+in about:config
+
 
 ### Troubleshooting
 1. /usr/bin/env: node: No such file or directory
